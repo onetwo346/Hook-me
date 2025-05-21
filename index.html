@@ -1,167 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Hook Me UP</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fishing Game</title>
   <style>
-    * {
+    html, body {
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
       overflow: hidden;
-      font-family: 'Arial', sans-serif;
-      background: linear-gradient(to bottom, #a0e9ff, #0066cc);
     }
-
-    .game-container {
-      position: relative;
+    .game {
       width: 100vw;
       height: 100vh;
+      background: linear-gradient(to top, #005f8d 60%, #dff7ff);
+      position: relative;
     }
-
-    .header {
-      position: absolute;
-      top: 15px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 26px;
-      font-weight: bold;
-      color: #003366;
-      z-index: 10;
+    .sky {
+      height: 30%;
+      background: #dff7ff;
+      position: relative;
     }
-
-    .fisher {
-      position: absolute;
-      top: 70px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 40px;
-      z-index: 5;
-    }
-
-    .hook {
-      position: absolute;
-      top: 150px;
-      left: 50%;
-      width: 4px;
-      height: 0;
-      background: #333;
-      transform: translateX(-50%);
-      z-index: 2;
-      display: none;
-      transition: height 0.3s ease;
-    }
-
-    .fish {
-      position: absolute;
-      height: 40px;
-    }
-
-    .score-board {
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      background: #ffcc00;
-      padding: 8px 14px;
-      border-radius: 20px;
-      font-weight: bold;
-      color: #333;
-      z-index: 10;
-    }
-
-    .ocean-floor {
+    .dock {
       position: absolute;
       bottom: 0;
-      width: 100%;
-      height: 100px;
-      background: #00334d;
-      z-index: 1;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .boy {
+      width: 60px;
+    }
+    .line {
+      width: 2px;
+      height: 250px;
+      background: transparent;
+      position: relative;
+    }
+    .anchor {
+      position: absolute;
+      top: 0;
+      left: -12px;
+      width: 24px;
+      transition: top 1s ease;
+    }
+    .sea {
+      height: 70%;
+      background: linear-gradient(#00bfff, #004f7a);
+      position: relative;
+      overflow: hidden;
+    }
+    .fish {
+      position: absolute;
+      width: 40px;
+      animation: swim 12s linear infinite;
+    }
+    @keyframes swim {
+      from { transform: translateX(-100px); }
+      to { transform: translateX(110vw); }
     }
   </style>
 </head>
 <body>
-
-<div class="game-container" onclick="dropHook(event)">
-  <div class="header">Hook Me UP</div>
-  <div class="score-board">Score: <span id="score">0</span></div>
-
-  <div class="fisher">
-    🧍‍♂️🎣
+  <div class="game">
+    <div class="sky">
+      <div class="dock">
+        <img class="boy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAF0lEQVRoge3BAQEAAAABIP6PzgpVAAAAAAAAAABk1g5vAAFXOBoAAAAASUVORK5CYII=" />
+        <div class="line">
+          <img class="anchor" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAWUlEQVR4AWP4//8/AxJggBnAQAaWBCgYIJDgT0jIGSBEWDSoAdRhxA+hD1zQlg2HIIB9kMNBLDQFugmAvAVDAAdEtEMzBR9GgE/SoZGFWAfQ8GyAgxByGxgQApmZDiFZXjxYAAAAASUVORK5CYII=" />
+        </div>
+      </div>
+    </div>
+    <div class="sea">
+      <!-- Fish -->
+      <img class="fish" style="top: 30%; left: 10%;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAdklEQVR4AWP4//8/AzQY4LgxMfAwEgzIP0MxBxhEIQw5+AjE8A4igcwMBMlwPyHjDGAkK4D8P4hkhA0YgUOqA6gFRi8Rg9AZTPIQYoC0ThYAsRMhHoBxDLMDGyhOgSwKQJmIcQQgYP2Aa5yGrhCNGfMAAAAASUVORK5CYII=" />
+      <img class="fish" style="top: 60%; left: 20%;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAdklEQVR4AWP4//8/AzQY4LgxMfAwEgzIP0MxBxhEIQw5+AjE8A4igcwMBMlwPyHjDGAkK4D8P4hkhA0YgUOqA6gFRi8Rg9AZTPIQYoC0ThYAsRMhHoBxDLMDGyhOgSwKQJmIcQQgYP2Aa5yGrhCNGfMAAAAASUVORK5CYII=" />
+      <img class="fish" style="top: 50%; left: 50%;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAdklEQVR4AWP4//8/AzQY4LgxMfAwEgzIP0MxBxhEIQw5+AjE8A4igcwMBMlwPyHjDGAkK4D8P4hkhA0YgUOqA6gFRi8Rg9AZTPIQYoC0ThYAsRMhHoBxDLMDGyhOgSwKQJmIcQQgYP2Aa5yGrhCNGfMAAAAASUVORK5CYII=" />
+    </div>
   </div>
 
-  <div class="hook" id="hook"></div>
-  <div class="ocean-floor"></div>
-</div>
+  <script>
+    const anchor = document.querySelector('.anchor');
+    let isDropping = false;
 
-<script>
-  const container = document.querySelector('.game-container');
-  const hook = document.getElementById('hook');
-  const scoreDisplay = document.getElementById('score');
-  let score = 0;
+    document.body.addEventListener('click', () => {
+      if (isDropping) return;
+      isDropping = true;
+      anchor.style.top = '220px';
 
-  function createFish() {
-    const fish = document.createElement('img');
-    fish.src = 'https://img.icons8.com/color/48/fish.png';
-    fish.classList.add('fish');
-
-    const topPosition = Math.random() * (window.innerHeight - 200) + 150;
-    const direction = Math.random() > 0.5 ? 1 : -1;
-    const startX = direction === 1 ? -60 : window.innerWidth + 60;
-    const speed = Math.random() * 2 + 1;
-
-    fish.style.top = `${topPosition}px`;
-    fish.style.left = `${startX}px`;
-    fish.style.transform = direction === 1 ? 'scaleX(1)' : 'scaleX(-1)';
-
-    container.appendChild(fish);
-
-    let posX = startX;
-    const swim = setInterval(() => {
-      posX += direction * speed;
-      fish.style.left = `${posX}px`;
-
-      if ((direction === 1 && posX > window.innerWidth + 60) ||
-          (direction === -1 && posX < -60)) {
-        clearInterval(swim);
-        fish.remove();
-      }
-    }, 20);
-  }
-
-  setInterval(createFish, 1000);
-
-  function dropHook() {
-    hook.style.display = 'block';
-    hook.style.height = '300px';
-
-    setTimeout(() => {
-      const hookRect = hook.getBoundingClientRect();
-      document.querySelectorAll('.fish').forEach(fish => {
-        const fishRect = fish.getBoundingClientRect();
-
-        if (
-          hookRect.left < fishRect.right &&
-          hookRect.right > fishRect.left &&
-          hookRect.bottom > fishRect.top &&
-          hookRect.top < fishRect.bottom
-        ) {
-          fish.remove();
-          score++;
-          scoreDisplay.textContent = score;
-        }
-      });
-
-      hook.style.height = '0px';
       setTimeout(() => {
-        hook.style.display = 'none';
-      }, 300);
-    }, 500);
-  }
-</script>
-
+        anchor.style.top = '0px';
+        isDropping = false;
+      }, 1000);
+    });
+  </script>
 </body>
 </html>
