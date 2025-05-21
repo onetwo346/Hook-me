@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hook Me UP</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      overflow: hidden;
+      font-family: 'Arial', sans-serif;
+    }
+
+    .game-container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      background: linear-gradient(to bottom, #b3ecff, #0066cc);
+      overflow: hidden;
+    }
+
+    .header {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      z-index: 5;
+      color: #003366;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .button-group {
+      display: flex;
+      justify-content: space-between;
+      width: 90%;
+      margin: 60px auto 0;
+      position: relative;
+      z-index: 5;
+    }
+
+    .button {
+      padding: 12px 20px;
+      border-radius: 25px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .pink {
+      background: #ff33cc;
+    }
+
+    .blue {
+      background: #0099ff;
+    }
+
+    .badge {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      background: red;
+      color: white;
+      font-size: 14px;
+      border-radius: 50%;
+      padding: 5px 8px;
+    }
+
+    .fisher {
+      position: absolute;
+      top: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+    }
+
+    .fisher img {
+      height: 100px;
+    }
+
+    .hook {
+      position: absolute;
+      top: 180px;
+      left: 50%;
+      width: 4px;
+      height: 300px;
+      background: #333;
+      transform: translateX(-50%);
+      z-index: 1;
+      display: none;
+    }
+
+    .fish {
+      position: absolute;
+      height: 40px;
+      transition: transform 0.2s;
+    }
+
+    .ocean-floor {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 100px;
+      background: #00334d;
+      z-index: 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="game-container" onclick="dropHook(event)">
+  <div class="header">Hook Me UP</div>
+  <div class="button-group">
+    <div class="button pink">People I hooked up <span class="badge" id="score">0</span></div>
+    <div class="button blue">People hooked me up <span class="badge">2</span></div>
+  </div>
+
+  <div class="fisher">
+    🎣
+  </div>
+
+  <div class="hook" id="hook"></div>
+
+  <div class="ocean-floor"></div>
+</div>
+
+<script>
+  const container = document.querySelector('.game-container');
+  const hook = document.getElementById('hook');
+  const scoreDisplay = document.getElementById('score');
+  let score = 0;
+
+  // Create multiple fish swimming
+  function createFish() {
+    const fish = document.createElement('img');
+    fish.src = 'https://img.icons8.com/color/48/fish.png';
+    fish.classList.add('fish');
+
+    const startY = Math.random() * (window.innerHeight - 200) + 150;
+    fish.style.top = `${startY}px`;
+
+    const direction = Math.random() > 0.5 ? 1 : -1;
+    const startX = direction === 1 ? -60 : window.innerWidth + 60;
+    fish.style.left = `${startX}px`;
+    fish.style.transform = direction === 1 ? 'scaleX(1)' : 'scaleX(-1)';
+
+    container.appendChild(fish);
+
+    let posX = startX;
+    const speed = Math.random() * 2 + 1;
+
+    const swim = setInterval(() => {
+      posX += direction * speed;
+      fish.style.left = `${posX}px`;
+
+      if ((direction === 1 && posX > window.innerWidth + 60) ||
+          (direction === -1 && posX < -60)) {
+        clearInterval(swim);
+        fish.remove();
+      }
+    }, 20);
+  }
+
+  setInterval(createFish, 1000);
+
+  function dropHook(e) {
+    hook.style.display = 'block';
+    hook.style.transition = 'height 0.3s';
+    hook.style.height = '300px';
+
+    setTimeout(() => {
+      const hookRect = hook.getBoundingClientRect();
+      document.querySelectorAll('.fish').forEach(fish => {
+        const fishRect = fish.getBoundingClientRect();
+
+        if (
+          hookRect.left < fishRect.right &&
+          hookRect.right > fishRect.left &&
+          hookRect.bottom > fishRect.top &&
+          hookRect.top < fishRect.bottom
+        ) {
+          fish.remove();
+          score++;
+          scoreDisplay.textContent = score;
+        }
+      });
+
+      hook.style.height = '0px';
+      setTimeout(() => {
+        hook.style.display = 'none';
+      }, 300);
+    }, 500);
+  }
+</script>
+
+</body>
+</html>
